@@ -1,0 +1,22 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug with OpenOCD",
+      "cwd": "${workspaceRoot}",
+      "request": "launch",
+      "type": "cortex-debug",
+      "executable": "./build/Poly1.elf",
+      "servertype": "openocd",
+      "serverpath":"openocd",
+      "gdbPath":"gdb-multiarch",
+      "configFiles": [
+        "interface/stlink.cfg",
+        "target/stm32h7x.cfg"
+      ],
+      "searchDir": [],
+      "runToEntryPoint": "main",
+    }
+  ]
+
+}
