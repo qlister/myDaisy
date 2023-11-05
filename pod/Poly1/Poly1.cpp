@@ -148,6 +148,7 @@ void UpdateLeds()
 {
     hw.led1.SetColor(colors[chordNum]);
     //  hw.led2.SetColor(colors[chordNum]);      // only play with one LED
+    // another null edit
     hw.UpdateLeds();
 }
 

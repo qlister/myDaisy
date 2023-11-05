@@ -1,0 +1,12 @@
+# .gitignore
+
+# Ignore ChordMachine directory
+ChordMachine/
+
+# Ignore bin files
+*.bin
+*.d
+*.hex
+*.lst
+*.o
+
