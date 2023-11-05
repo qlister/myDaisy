@@ -147,7 +147,7 @@ void UpdateKnobs()
 void UpdateLeds()
 {
     hw.led1.SetColor(colors[chordNum]);
-    //  hw.led2.SetColor(colors[chordNum]);      // only play with one LED
+    hw.led2.SetColor(colors[chordNum]);
     // another null edit
     hw.UpdateLeds();
 }
