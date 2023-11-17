@@ -12,6 +12,7 @@ int        chord[10][3];
 Color      colors[10];
 int        chordNum = 0;
 
+// Null edit
 
 void UpdateControls();
 
