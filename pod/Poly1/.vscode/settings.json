@@ -1,10 +1,3 @@
 {
-    "makefile.launchConfigurations": [
-        {
-            "cwd": "/home/quentinlister/myDaisy/pod/Poly1/build",
-            "binaryPath": "/home/quentinlister/myDaisy/pod/Poly1/build/Poly1.elf",
-            "binaryArgs": []
-        }
-    ],
-    "cortex-debug.variableUseNaturalFormat": false
+
 }
