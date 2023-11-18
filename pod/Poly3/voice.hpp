@@ -20,7 +20,8 @@ public:
         return "undefined";
     };
 
-};
+}; 
+
 
 #define VOICE_HXX
 

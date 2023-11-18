@@ -10,6 +10,7 @@ class square : public voice{
 
 public:
     string name( );
+    
 
 };
 

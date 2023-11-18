@@ -4,7 +4,7 @@
 #include "daisysp.h"
 
 using namespace daisy;
-//using namespace daisysp;
+using namespace daisysp;
 
 extern DaisySeed *myDaisy;
 

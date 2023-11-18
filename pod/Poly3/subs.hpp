@@ -5,6 +5,7 @@ using namespace std;
 
 int sub( void );
 
+
 // base class for a voice
 class voice{
 
