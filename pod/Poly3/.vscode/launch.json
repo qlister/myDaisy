@@ -1,35 +1,40 @@
 {
+  "version": "0.2.0",
   "configurations": [
+    
     {
+      "name": "Debug with OpenOCD",
+      "cwd": "${workspaceRoot}",
+      "request": "launch",
+      "type": "cortex-debug",
+      "executable": "./build/Poly3.elf",
+      "servertype": "openocd",
+      "serverpath":"openocd",
+      "gdbPath":"gdb-multiarch",
+      "configFiles": [
+        "/usr/share/openocd/scripts/interface/stlink.cfg",
+        "/usr/share/openocd/scripts/target/stm32h7x.cfg"
+      ],
+      "searchDir": [],
+      "runToEntryPoint": "main",
+    },
+    {
+      "name": "Debug TEST with OpenOCD",
+      "cwd": "${workspaceRoot}",
+      "preLaunchTask": "build_all_debug",
+      "request": "launch",
+      "type": "cortex-debug",
+      "executable": "./build/Poly3.elf",
+      "servertype": "openocd",
+      "serverpath":"openocd",
+      "gdbPath":"gdb-multiarch",
       "configFiles": [
         "interface/stlink.cfg",
         "target/stm32h7x.cfg"
       ],
-      "cwd": "${workspaceFolder}",
-      "debuggerArgs": [
-        "-d",
-        "${workspaceRoot}"
-      ],
-      "executable": "${workspaceRoot}/build/Poly3.elf",
-      "interface": "swd",
-      "name": "Cortex Debug",
-      "openOCDLaunchCommands": [
-        "init",
-        "reset init"
-      ],
-      "preLaunchTask": "build_all_debug",
-      "preRestartCommands": [
-        "load",
-        "enable breakpoint",
-        "monitor reset"
-      ],
-      "request": "launch",
-      "runToMain": true,
-      "servertype": "openocd",
-      "showDevDebugOutput": true,
-      "svdFile": "${workspaceRoot}/.vscode/STM32H750x.svd",
-      "type": "cortex-debug"
+      "searchDir": [],
+      "runToEntryPoint": "main",
     }
-  ],
-  "version": "0.2.0"
+  ]
+
 }

@@ -3,11 +3,7 @@
 
 using namespace std;
 
-/*
-string square::name(){
-    return "Square";
-}
-*/
+
 
 
 
