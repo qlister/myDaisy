@@ -34,7 +34,16 @@ void AudioCallback(AudioHandle::InputBuffer in, AudioHandle::OutputBuffer out, s
         out[0][i] = sine_signal;
         out[1][i] = sine_signal;
 	}
-
+/*
+	for (size_t i = 0; i < size; i++)
+	{
+        // The oscillator's Process function synthesizes, and
+        // returns the next sample.
+        float sine_signal = osc.Process();
+        out[0][i] = sine_signal;
+        out[1][i] = sine_signal;
+	}
+*/
 	CpuLoad.OnBlockEnd();
 }
 
@@ -53,10 +62,10 @@ int main(void)
 //    myVoice = mySquare;
 //	myDaisy->PrintLine( "Voice name = %s\n", myVoice->name() );
 
-	hw.SetAudioBlockSize(4); // number of samples handled per callback
+	hw.SetAudioBlockSize(32); // number of samples handled per callback
 	hw.SetAudioSampleRate(SaiHandle::Config::SampleRate::SAI_48KHZ);
 
-	CpuLoad.Init( 48.0e3, 4 );
+	CpuLoad.Init( 48.0e3, 32 );
 
 	hw.StartAdc();
 
@@ -68,34 +77,18 @@ int main(void)
 	// Simple timer to print the CPU load every 100ms.
 	uint32_t lastTime = System::GetUs();
 
-	// int i=0;
 	while(1) {
-		uint32_t thisTime = System::GetUs();
 
-		//myDaisy->PrintLine( "Last %lu: This %lu: diff %lu ", lastTime, thisTime, thisTime - lastTime );
-		//FixedCapStr<100>str("");
-
-		//myDaisy->PrintLine(str);
-//		myDaisy->PrintLine( "Last %lu: This %lu: diff %lu ", lastTime, thisTime, thisTime - lastTime );
-
-
-		if( ( thisTime - lastTime ) > CPU_LOAD_UPDATE_INTERVAL ) {	// 100ms
-			
-			myDaisy->PrintLine( "Last %lu: This %lu: diff %lu ", lastTime, thisTime, thisTime - lastTime );
-
+		if( ( System::GetUs() - lastTime ) > CPU_LOAD_UPDATE_INTERVAL ) {	// 500ms
 			lastTime = System::GetUs();
 
-			myDaisy->PrintLine( "New Last %lu", lastTime );
-			myDaisy->PrintLine( "Diff %lu", System::GetUs() - thisTime );
-
-			/*
+			// Print the load to the serial console
 			FixedCapStr<100>str("");
-			str.AppendInt( i ++ );
 			str.Append("  Avg = ");
 			str.AppendFloat( CpuLoad.GetAvgCpuLoad() );
 			str.Append( "  Max = ");
-			str.AppendFloat( CpuLoad.GetMaxCpuLoad() );*/
-			//myDaisy->PrintLine(str);
+			str.AppendFloat( CpuLoad.GetMaxCpuLoad() );
+			myDaisy->PrintLine(str);
 		}
 	}
 }
