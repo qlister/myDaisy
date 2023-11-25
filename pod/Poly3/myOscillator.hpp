@@ -15,7 +15,7 @@ public:
     myOscillator(){};
     ~myOscillator(){};
 
-    void Process( float **buffer, int count );
+    void Process( AudioHandle::OutputBuffer buffer, size_t count );
 
 private:
     uint8_t waveform_;
@@ -29,7 +29,7 @@ public:
     ~myVoice(){};
 
     void Init( float samplerate );
-    void Process( float **buffer, int count  );
+    void Process( AudioHandle::OutputBuffer buffer, size_t count  );
 
 };
 

@@ -8,16 +8,15 @@
 using namespace daisy;
 using namespace daisysp;
 
-void myVoice::Process( float **buffer, int count ){
+void myVoice::Process( AudioHandle::OutputBuffer buffer, size_t count ){
 
     myOscillator::Process( buffer, count );
 
     for( int i=0; i<count; i++ ){
         float raw = **buffer;
         float outval = raw * daisysp::AdEnv::Process();
-        **buffer = outval;
-        (*buffer)++;
-        **buffer = outval;
+        buffer[0][i] = outval;
+        buffer[1][i] = outval; 
     }
 
 }

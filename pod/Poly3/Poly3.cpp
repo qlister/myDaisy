@@ -33,26 +33,28 @@ void AudioCallback(AudioHandle::InputBuffer in, AudioHandle::OutputBuffer out, s
     {
         thisVoice.Trigger();
     }
- 
+    
     thisVoice.Process( out, size );
 
-	for (size_t i = 0; i < size; i++)
-	{
-        // The oscillator's Process function synthesizes, and
-        // returns the next sample.
-        //float sample = osc.Process();
-        float sample = out[0][i];
-		filt.Process(sample);
-		sample = filt.Low();
-		out[0][i] = sample;
-        out[1][i] = sample;
-	}
 /*
 	for (size_t i = 0; i < size; i++)
 	{
         // The oscillator's Process function synthesizes, and
         // returns the next sample.
-        float sine_signal = osc.Process();
+        //float sample = osc.Process();
+        volatile float sample = out[0][i];
+		filt.Process(sample);
+		sample = filt.Low();
+		out[0][i] = sample;
+        out[1][i] = sample;
+	}
+*/
+/*
+	for (size_t i = 0; i < size; i++)
+	{
+        // The oscillator's Process function synthesizes, and
+        // returns the next sample.
+        float sine_signal = thisVoice.Process();
         out[0][i] = sine_signal;
         out[1][i] = sine_signal;
 	}
@@ -105,8 +107,6 @@ void HandleMidiMessage(MidiEvent m)
     }
 }
 
-
-
 int main(void)
 {
 
@@ -114,7 +114,7 @@ int main(void)
 
 	myPod.Init();
 	mySeed = &myPod.seed;
-	mySeed->StartLog(true);
+	//mySeed->StartLog(true);
 
 //    mySquare = new square;
 
@@ -153,12 +153,12 @@ int main(void)
 			lastTime = System::GetUs();
 
 			// Print the load to the serial console
-			FixedCapStr<100>str("Avg = ");
+/*			FixedCapStr<100>str("Avg = ");
 			str.AppendFloat( CpuLoad.GetAvgCpuLoad() );
 			str.Append( "  Max = ");
 			str.AppendFloat( CpuLoad.GetMaxCpuLoad() );
 			mySeed->PrintLine(str);
-		}
+*/		}
 
         myPod.midi.Listen();
         // Handle MIDI Events
