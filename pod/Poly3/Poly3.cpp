@@ -5,6 +5,7 @@
 #include "voice.hpp"
 #include "voice_square.hpp"
 #include "Poly3.hpp"
+#include "myOscillator.hpp"
 
 #define CPU_LOAD_UPDATE_INTERVAL	500000UL		// Units of 1us
 
@@ -16,9 +17,10 @@ CpuLoadMeter CpuLoad;
 
 OledDisplay<SSD130x4WireSpi128x64Driver> display;
 
-DaisySeed *mySeed;
-daisysp::Oscillator osc;
-Svf        filt;
+DaisySeed           *mySeed;
+//daisysp::Oscillator osc;
+myVoice             thisVoice;
+Svf                 filt;
 
 // null edit
 
@@ -27,11 +29,19 @@ void AudioCallback(AudioHandle::InputBuffer in, AudioHandle::OutputBuffer out, s
 	CpuLoad.OnBlockStart();
 
 	myPod.ProcessAllControls();
+    if( myPod.button1.RisingEdge() )
+    {
+        thisVoice.Trigger();
+    }
+ 
+    thisVoice.Process( out, size );
+
 	for (size_t i = 0; i < size; i++)
 	{
         // The oscillator's Process function synthesizes, and
         // returns the next sample.
-        float sample = osc.Process();
+        //float sample = osc.Process();
+        float sample = out[0][i];
 		filt.Process(sample);
 		sample = filt.Low();
 		out[0][i] = sample;
@@ -69,8 +79,8 @@ void HandleMidiMessage(MidiEvent m)
             if(m.data[1] != 0)
             {
                 p = m.AsNoteOn();
-                osc.SetFreq(mtof(p.note));
-                osc.SetAmp((p.velocity / 127.0f));
+                thisVoice.SetFreq(mtof(p.note));
+                thisVoice.SetAmp((p.velocity / 127.0f));
             }
         }
         break;
@@ -121,8 +131,16 @@ int main(void)
 
 	// We initialize the oscillator with the sample rate of the hardware
     // this ensures that the frequency of the Oscillator will be accurate.
-    osc.Init(myPod.AudioSampleRate());
-    osc.SetWaveform(Oscillator::WAVE_POLYBLEP_SAW);
+    thisVoice.Init(myPod.AudioSampleRate());
+    thisVoice.SetWaveform(Oscillator::WAVE_POLYBLEP_SAW);
+    thisVoice.SetFreq(100.0f);
+    thisVoice.SetAmp(.5f);
+    thisVoice.SetCurve(-15.0f);
+    thisVoice.SetTime(ADENV_SEG_ATTACK, 0.002f);
+    thisVoice.SetTime(ADENV_SEG_DECAY, 2.6f);
+    thisVoice.SetMax(1.f);
+    thisVoice.SetMin(0.f);
+
     filt.Init(myPod.AudioSampleRate());
 
 	myPod.StartAudio(AudioCallback);
