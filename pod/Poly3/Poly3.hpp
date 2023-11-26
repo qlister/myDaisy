@@ -6,7 +6,7 @@
 using namespace daisy;
 using namespace daisysp;
 
-extern DaisySeed *myDaisy;
+//extern DaisySeed *myDaisy;
 
 #define POLY3_HPP
 

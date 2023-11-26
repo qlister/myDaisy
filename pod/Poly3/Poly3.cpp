@@ -2,12 +2,11 @@
 #include "daisysp.h"
 #include "dev/oled_ssd130x.h"
 
-#include "voice.hpp"
-#include "voice_square.hpp"
 #include "Poly3.hpp"
-#include "myOscillator.hpp"
+#include "voice/voice.hpp"
 
 #define CPU_LOAD_UPDATE_INTERVAL	500000UL		// Units of 1us
+#define BLOCK_SIZE  48
 
 using namespace daisy;
 using namespace daisysp;
@@ -19,7 +18,7 @@ OledDisplay<SSD130x4WireSpi128x64Driver> display;
 
 DaisySeed           *mySeed;
 //daisysp::Oscillator osc;
-myVoice             thisVoice;
+voice               thisVoice;
 Svf                 filt;
 
 // null edit
@@ -114,7 +113,7 @@ int main(void)
 
 	myPod.Init();
 	mySeed = &myPod.seed;
-	//mySeed->StartLog(true);
+//	mySeed->StartLog(true);
 
 //    mySquare = new square;
 
@@ -122,24 +121,24 @@ int main(void)
 //    myVoice = mySquare;
 //	mySeed->PrintLine( "Voice name = %s\n", myVoice->name() );
 
-	myPod.SetAudioBlockSize(32); // number of samples handled per callback
+	myPod.SetAudioBlockSize(BLOCK_SIZE); // number of samples handled per callback
 	myPod.SetAudioSampleRate(SaiHandle::Config::SampleRate::SAI_48KHZ);
 
-	CpuLoad.Init( 48.0e3, 32 );
+	CpuLoad.Init( myPod.AudioSampleRate(), BLOCK_SIZE );
 
 	myPod.StartAdc();
 
 	// We initialize the oscillator with the sample rate of the hardware
     // this ensures that the frequency of the Oscillator will be accurate.
-    thisVoice.Init(myPod.AudioSampleRate());
-    thisVoice.SetWaveform(Oscillator::WAVE_POLYBLEP_SAW);
-    thisVoice.SetFreq(100.0f);
-    thisVoice.SetAmp(.5f);
-    thisVoice.SetCurve(-15.0f);
-    thisVoice.SetTime(ADENV_SEG_ATTACK, 0.002f);
-    thisVoice.SetTime(ADENV_SEG_DECAY, 2.6f);
-    thisVoice.SetMax(1.f);
-    thisVoice.SetMin(0.f);
+    thisVoice.Init( myPod.AudioSampleRate() );
+    thisVoice.oscillator::SetWaveform(Oscillator::WAVE_POLYBLEP_SAW);
+    thisVoice.oscillator::SetFreq(100.0f);
+    thisVoice.oscillator::SetAmp(.5f);
+    thisVoice.envelope::SetCurve(-15.0f);
+    thisVoice.envelope::SetTime(ADENV_SEG_ATTACK, 0.002f);
+    thisVoice.envelope::SetTime(ADENV_SEG_DECAY, 2.6f);
+    thisVoice.envelope::SetMax(1.f);
+    thisVoice.envelope::SetMin(0.f);
 
     filt.Init(myPod.AudioSampleRate());
 
@@ -152,13 +151,14 @@ int main(void)
 		if( ( System::GetUs() - lastTime ) > CPU_LOAD_UPDATE_INTERVAL ) {	// 500ms
 			lastTime = System::GetUs();
 
-			// Print the load to the serial console
-/*			FixedCapStr<100>str("Avg = ");
+/*			// Print the load to the serial console
+			FixedCapStr<100>str("Avg = ");
 			str.AppendFloat( CpuLoad.GetAvgCpuLoad() );
 			str.Append( "  Max = ");
 			str.AppendFloat( CpuLoad.GetMaxCpuLoad() );
 			mySeed->PrintLine(str);
-*/		}
+*/
+		}
 
         myPod.midi.Listen();
         // Handle MIDI Events
@@ -166,7 +166,6 @@ int main(void)
         {
             HandleMidiMessage(myPod.midi.PopEvent());
         }
-
 
 	}
 }

@@ -2,7 +2,7 @@
 TARGET = Poly3
 
 # Sources
-CPP_SOURCES = Poly3.cpp subs.cpp voice.cpp voice_square.cpp myOscillator.cpp myVoice.cpp
+CPP_SOURCES = Poly3.cpp voice/voice.cpp voice/dynamics/envelope.cpp voice/osc/oscillator.cpp
 
 # Library Locations
 LIBDAISY_DIR = /home/quentinlister/DaisyExamples/libDaisy/
