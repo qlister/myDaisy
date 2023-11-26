@@ -19,6 +19,7 @@ public:
 
     void Init( float samplerate );
     void Process( AudioHandle::OutputBuffer buffer, size_t count  );
+    void ProcessAdd( AudioHandle::OutputBuffer buffer, size_t count  );
 
 };
 

@@ -7,18 +7,12 @@
 using namespace daisy;
 using namespace daisysp;
 
-
 void envelope::Process( AudioHandle::OutputBuffer buffer, size_t count ){
 
-    float* ptr = *buffer; 
     for( size_t i=0; i<count; i++ ){
-        const float sample = daisysp::AdEnv::Process();
-        *ptr = sample;
-        ptr++;
-        *ptr = sample;
-        ptr++; 
-        //buffer[0][i] = sample;
-        //buffer[1][i] = sample; 
+        const float sample = buffer[0][i] * AdEnv::Process();
+        buffer[0][i] = sample;
+        buffer[1][i] = sample; 
     }
-    
+
 };
