@@ -21,7 +21,7 @@
     {
       "name": "Debug TEST with OpenOCD",
       "cwd": "${workspaceRoot}",
-      "preLaunchTask": "build_all_debug",
+      "preLaunchTask": "clean_debug_build",
       "request": "launch",
       "type": "cortex-debug",
       "executable": "./build/Poly3.elf",

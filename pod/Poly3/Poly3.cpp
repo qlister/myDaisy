@@ -9,6 +9,11 @@
 #define CPU_LOAD_UPDATE_INTERVAL	500000UL		// Units of 1us
 
 
+#define SKINNY_ROW_HEIGHT 13
+#define DEFAULT_FONT Font_7x10
+#define SMALL_FONT Font_6x8
+
+
 using namespace daisy;
 using namespace daisysp;
 
@@ -133,6 +138,11 @@ int main(void)
     // OLED
     OledDisplay<SSD13054WireSpi132x64Driver>::Config display_config;
     display.Init(display_config);
+
+    display.DrawLine( 10,10, 20, 20, 1 );
+    display.DrawRect( 0,0, 127, 63, 1, false );
+    display.WriteString( "Hello World", DEFAULT_FONT, true );
+    display.Update();
 
 	myPod.StartAdc();
 

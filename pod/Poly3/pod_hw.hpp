@@ -222,7 +222,9 @@ namespace daisy
             dsy_gpio_write(&pin_reset_, 0);
             System::Delay(10);
             dsy_gpio_write(&pin_reset_, 1);
-            System::Delay(10);
+            System::Delay(10);              // unit of ms
+
+
         };
         void SendCommand(uint8_t cmd)
         {
@@ -247,7 +249,7 @@ namespace daisy
      */
     using SSD13054WireSpi132x64Driver
         = daisy::SSD1305Driver<132, 64, SSD13054WireSpiTransport>;
-        
+
 }
 #endif
 
