@@ -58,7 +58,7 @@
         "build_libdaisy",
         "build_daisysp"
       ],
-      "label": "build_all_debug",
+      "label": "clean_debug_build",
       "options": {
         "cwd": "${workspaceFolder}"
       },

@@ -1,7 +1,7 @@
 
 #pragma once
-#ifndef MY_VOICE_H
-#define MY_VOICE_H
+#ifndef VOICE_H
+#define VOICE_H
 
 #include "daisy_pod.h"
 #include "daisysp.h"

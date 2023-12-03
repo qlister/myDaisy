@@ -4,6 +4,7 @@
 
 #include "Poly3.hpp"
 #include "voice/voice.hpp"
+#include "pod_hw.hpp"
 
 #define CPU_LOAD_UPDATE_INTERVAL	500000UL		// Units of 1us
 
@@ -14,7 +15,7 @@ using namespace daisysp;
 DaisyPod myPod;
 CpuLoadMeter CpuLoad;
 
-OledDisplay<SSD130x4WireSpi128x64Driver> display;
+OledDisplay<SSD13054WireSpi132x64Driver> display;
 
 //voice thisVoice;
 voice voices[VOICE_COUNT];
@@ -128,6 +129,10 @@ int main(void)
 	myPod.SetAudioSampleRate(SaiHandle::Config::SampleRate::SAI_48KHZ);
 
 	CpuLoad.Init( myPod.AudioSampleRate(), BLOCK_SIZE );
+
+    // OLED
+    OledDisplay<SSD13054WireSpi132x64Driver>::Config display_config;
+    display.Init(display_config);
 
 	myPod.StartAdc();
 
