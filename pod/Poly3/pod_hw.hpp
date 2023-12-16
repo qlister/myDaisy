@@ -6,6 +6,83 @@
 #include "per/spi.h"
 #include "per/gpio.h"
 #include "sys/system.h"
+
+
+
+
+#define SSD1305_I2C_ADDRESS 0x3C // 011110+SA0+RW - 0x3C or 0x3D
+
+#define SSD1305_SETLOWCOLUMN 0x00
+#define SSD1305_SETHIGHCOLUMN 0x10
+#define SSD1305_MEMORYMODE 0x20
+#define SSD1305_SETCOLADDR 0x21
+#define SSD1305_SETPAGEADDR 0x22
+#define SSD1305_SETSTARTLINE 0x40
+
+#define SSD1305_SETCONTRAST 0x81
+#define SSD1305_SETBRIGHTNESS 0x82
+
+#define SSD1305_SETLUT 0x91
+
+#define SSD1305_SEGREMAP 0xA0
+#define SSD1305_DISPLAYALLON_RESUME 0xA4
+#define SSD1305_DISPLAYALLON 0xA5
+#define SSD1305_NORMALDISPLAY 0xA6
+#define SSD1305_INVERTDISPLAY 0xA7
+#define SSD1305_SETMULTIPLEX 0xA8
+#define SSD1305_DISPLAYDIM 0xAC
+#define SSD1305_MASTERCONFIG 0xAD
+#define SSD1305_DISPLAYOFF 0xAE
+#define SSD1305_DISPLAYON 0xAF
+
+#define SSD1305_SETPAGESTART 0xB0
+
+#define SSD1305_COMSCANINC 0xC0
+#define SSD1305_COMSCANDEC 0xC8
+#define SSD1305_SETDISPLAYOFFSET 0xD3
+#define SSD1305_SETDISPLAYCLOCKDIV 0xD5
+#define SSD1305_SETAREACOLOR 0xD8
+#define SSD1305_SETPRECHARGE 0xD9
+#define SSD1305_SETCOMPINS 0xDA
+#define SSD1305_SETVCOMLEVEL 0xDB
+
+
+  static const uint8_t init_128x64[] = {
+      // Init sequence for 128x32 OLED module
+      SSD1305_DISPLAYOFF,          // 0xAE
+      SSD1305_SETLOWCOLUMN | 0x4,  // low col = 0
+      SSD1305_SETHIGHCOLUMN | 0x4, // hi col = 0
+      SSD1305_SETSTARTLINE | 0x0,  // line #0
+      0x2E,                        //??
+      SSD1305_SETCONTRAST,
+      0x32, // 0x81, 0x32
+      SSD1305_SETBRIGHTNESS,
+      0x80, // 0x82, 0x80
+      SSD1305_SEGREMAP | 0x01,
+      SSD1305_NORMALDISPLAY, // 0xA6
+      SSD1305_SETMULTIPLEX,
+      0x3F, // 0xA8, 0x3F (1/64)
+      SSD1305_MASTERCONFIG,
+      0x8E, /* external vcc supply */
+      SSD1305_COMSCANDEC,
+      SSD1305_SETDISPLAYOFFSET,
+      0x40, // 0xD3, 0x40
+      SSD1305_SETDISPLAYCLOCKDIV,
+      0xF0, // 0xD5, 0xF0
+      SSD1305_SETAREACOLOR,
+      0x05,
+      SSD1305_SETPRECHARGE,
+      0xF1, // 0xd9, 0xF1
+      SSD1305_SETCOMPINS,
+      0x12, // 0xDA, 0x12
+      SSD1305_SETLUT,
+      0x3F,
+      0x3F,
+      0x3F,
+      0x3F};
+
+
+
 namespace daisy
 {
     /**
@@ -165,7 +242,7 @@ namespace daisy
     };
 
     /**
-     * 4 Wire SPI Transport for SSD1306 / SSD1309 OLED display devices
+     * 4 Wire SPI Transport for SSD1305 OLED display devices
      */
     class SSD13054WireSpiTransport
     {
@@ -245,10 +322,10 @@ namespace daisy
     };
 
         /**
-     * A driver for the SSD1306/SSD1309 128x64 OLED displays connected via 4 wire SPI  
+     * A driver for the SSD1305 128x64 OLED displays connected via 4 wire SPI  
      */
-    using SSD13054WireSpi132x64Driver
-        = daisy::SSD1305Driver<132, 64, SSD13054WireSpiTransport>;
+    using SSD13054WireSpi128x64Driver
+        = daisy::SSD1305Driver<128, 64, SSD13054WireSpiTransport>;
 
 }
 #endif

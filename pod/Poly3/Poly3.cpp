@@ -20,7 +20,7 @@ using namespace daisysp;
 DaisyPod myPod;
 CpuLoadMeter CpuLoad;
 
-OledDisplay<SSD13054WireSpi132x64Driver> display;
+OledDisplay<SSD13054WireSpi128x64Driver> display;
 
 //voice thisVoice;
 voice voices[VOICE_COUNT];
@@ -136,10 +136,10 @@ int main(void)
 	CpuLoad.Init( myPod.AudioSampleRate(), BLOCK_SIZE );
 
     // OLED
-    OledDisplay<SSD13054WireSpi132x64Driver>::Config display_config;
+    OledDisplay<SSD13054WireSpi128x64Driver>::Config display_config;
     display.Init(display_config);
 
-    display.DrawLine( 10,10, 20, 20, 1 );
+    // display.DrawLine( 10,10, 20, 20, 1 );
     display.DrawRect( 0,0, 127, 63, 1, false );
     display.WriteString( "Hello World", DEFAULT_FONT, true );
     display.Update();
